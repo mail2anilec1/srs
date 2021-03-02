@@ -75,6 +75,9 @@ DESC        = st.pc
 TARGETS     = darwin-debug darwin-optimized         \
               linux-debug linux-optimized
 
+UTEST_TARGETS = darwin-debug-utest linux-debug-utest \
+                darwin-debug-gcov linux-debug-gcov
+
 #
 # Platform specifics
 #
@@ -159,9 +162,14 @@ endif
 # or to enable stats for ST:
 #
 # make EXTRA_CFLAGS=-DDEBUG_STATS
+#
+# or enable the coverage for utest:
+# make UTEST_FLAGS="-fprofile-arcs -ftest-coverage"
+#
 ##########################
 
 CFLAGS      += $(DEFINES) $(OTHER_FLAGS) $(EXTRA_CFLAGS)
+CFLAGS      += $(UTEST_FLAGS)
 
 OBJS        = $(TARGETDIR)/sched.o \
               $(TARGETDIR)/stk.o   \
@@ -203,6 +211,8 @@ unknown:
 	@echo "Please specify one of the following targets:"
 	@echo
 	@for target in $(TARGETS); do echo $$target; done
+	@echo
+	@for target in $(UTEST_TARGETS); do echo $$target; done
 	@echo
 
 st.pc:	st.pc.in
@@ -266,6 +276,24 @@ linux-debug:
 	$(MAKE) OS="LINUX" BUILD="DBG"
 linux-optimized:
 	$(MAKE) OS="LINUX" BUILD="OPT"
+
+darwin-debug-utest:
+	@echo "Build utest for state-threads"
+	$(MAKE) OS="DARWIN" BUILD="DBG"
+	cd utest && $(MAKE)
+linux-debug-utest:
+	@echo "Build utest for state-threads"
+	$(MAKE) OS="LINUX" BUILD="DBG"
+	cd utest && $(MAKE)
+
+darwin-debug-gcov:
+	@echo "Build utest with gcov for state-threads"
+	$(MAKE) OS="DARWIN" BUILD="DBG" UTEST_FLAGS="-fprofile-arcs -ftest-coverage"
+	cd utest && $(MAKE) UTEST_FLAGS="-fprofile-arcs -ftest-coverage"
+linux-debug-gcov:
+	@echo "Build utest with gcov for state-threads"
+	$(MAKE) OS="LINUX" BUILD="DBG" UTEST_FLAGS="-fprofile-arcs -ftest-coverage"
+	cd utest && $(MAKE) UTEST_FLAGS="-fprofile-arcs -ftest-coverage"
 
 ##########################
 
