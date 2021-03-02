@@ -70,6 +70,7 @@ The branch [srs](https://github.com/ossrs/state-threads/tree/srs) will be patche
 - [x] Refine performance for sleep or epoll_wait(0), [#17](https://github.com/ossrs/state-threads/issues/17).
 - [ ] Improve the performance of timer. [9fe8cfe5b](https://github.com/ossrs/state-threads/commit/9fe8cfe5b1c9741a2e671a46215184f267fba400), [7879c2b](https://github.com/ossrs/state-threads/commit/7879c2b), [387cddb](https://github.com/ossrs/state-threads/commit/387cddb)
 - [ ] Support Multiple Threads for Linux and Darwin. [#19](https://github.com/ossrs/state-threads/issues/19), [srs#2188](https://github.com/ossrs/srs/issues/2188).
+- [x] Support utest by gtest and coverage by gcov/gocvr.
 
 ## GDB Tools
 
@@ -115,6 +116,8 @@ mkdir -p coverage &&
 gcovr -r . -e LINUX -e DARWIN --html --html-details -o coverage/st.html &&
 open coverage/st.html
 ```
+
+> Note: We ignore `LINUX*` and `DARWIN*` which is `obj` actually.
 
 ## Docs & Analysis
 
